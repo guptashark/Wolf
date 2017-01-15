@@ -1,0 +1,12 @@
+# Todo: Fix this gitignore file, with the tilde's
+
+*.c~
+*.e~
+*.h~
+*~
+
+*.un
+*.un~
+*.exe
+*.obj
+*.swp
