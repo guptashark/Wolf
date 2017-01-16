@@ -1,8 +1,8 @@
 
 CC = cl
-
-SRC = main.c
+CFLAGS = /Wall /WX /wd4710
+SRC = main.c bstree.c
 
 all: 
-	$(CC) $(SRC)
+	$(CC) $(CFLAGS) $(SRC)
 
