@@ -1,13 +1,9 @@
 #include <stdlib.h>
+#include <stdbool.h>
+#include <stdio.h>
 
+#include "custom_mem.h"
 #include "bstree.h"
-
-static void *(*custom_malloc)(size_t);
-
-int bst_lib_set_custom_malloc(void *(*malloc_fn)(size_t)) {
-	custom_malloc = malloc_fn;
-	return 0;
-}
 
 struct bst_node {
 	void *key;

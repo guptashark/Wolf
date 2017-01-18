@@ -30,6 +30,7 @@ int main(void) {
 		assert(2 == result);
 	}
 
+	/* TODO mem tests to be made after creating custom mem module */
 	printf("All tests passed.\n");
 	return 0;
 }

@@ -1,5 +1,4 @@
 
-int bst_lib_set_custom_malloc(void *(*malloc_fn)(size_t));
 
 
 struct bstree;
