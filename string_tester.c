@@ -1,4 +1,6 @@
 #include <stdio.h>
+#include <assert.h>
+
 
 #include "string.h"
 
@@ -25,7 +27,7 @@ int main(void) {
 
 	int result = 0;
 	string_compare(str1, str2, &result);
-	printf("%d\n", result);
+	assert(result == 0);
 
 		
 

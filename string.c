@@ -112,8 +112,6 @@ int string_compare(struct string *str1, struct string *str2, int *result) {
 	int min_length = 0;
 	int longer_str = 0;
 
-	printf("some data... %d, %d\n", str1->length, str2->length);
-
 	if(str1->length > str2->length) {
 		min_length = str2->length;
 		longer_str = 1;
@@ -125,8 +123,6 @@ int string_compare(struct string *str1, struct string *str2, int *result) {
 		longer_str = 0;
 	}
 
-	printf("longer str: %d, len: %d\n", longer_str, min_length);
-
 	for(int i = 0; i < min_length; i++) {
 		if(str1->vals[i] > str2->vals[i]) {
 			*result = 1;
@@ -136,8 +132,6 @@ int string_compare(struct string *str1, struct string *str2, int *result) {
 			return 0;
 		}
 	}
-
-	printf("got here...???\n");
 
 	if(longer_str == 0) {
 		*result = 0;
