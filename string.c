@@ -1,9 +1,8 @@
 #include <stdlib.h>
 #include <stdio.h>
 
+#include "custom_mem.h"
 #include "string.h"
-
-// TODO replace all "mallocs" with "custom_malloc" for integration. 
 
 struct string {
 	int length;
@@ -19,17 +18,17 @@ string_init(struct string **str_ptr, char *s) {
 	if(NULL != *str_ptr) return 2;
 
 	struct string *ret = NULL;
-	ret = malloc(sizeof(struct string));
+	ret = custom_malloc(sizeof(struct string));
 
 	if(NULL == ret) return 1;
 
 	if(s == NULL) {
 		ret->length = 0;
 		ret->capacity = 8;
-		ret->vals = malloc(sizeof(char) * ret->capacity);
+		ret->vals = custom_malloc(sizeof(char) * ret->capacity);
 
 		if(NULL == ret->vals) {
-			free(ret);
+			custom_free(ret);
 			return 3;
 		}
 
@@ -43,10 +42,10 @@ string_init(struct string **str_ptr, char *s) {
 	int quotient = s_length / 8;
 	ret->capacity = (quotient + 1) * 8;
 	
-	ret->vals = malloc(sizeof(char) * ret->capacity);
+	ret->vals = custom_malloc(sizeof(char) * ret->capacity);
 
 	if(NULL == ret->vals) {
-		free(ret);
+		custom_free(ret);
 		return 3;
 	}
 
@@ -80,7 +79,7 @@ int string_concatenate(struct string *str1, struct string *str2) {
 	if(str1->length + str2->length > str1->capacity) {
 		int quotient = (str1->length + str2->length) / 8;
 		str1->capacity = (quotient + 1) * 8;
-		char *bigger_val = malloc(sizeof(char) * str1->capacity);
+		char *bigger_val = custom_malloc(sizeof(char) * str1->capacity);
 		if(NULL == bigger_val) {
 			return 3;
 		}
@@ -93,7 +92,7 @@ int string_concatenate(struct string *str1, struct string *str2) {
 			bigger_val[i + str1->length] = str2->vals[i];
 		}
 
-		free(str1->vals);
+		custom_free(str1->vals);
 		str1->vals = bigger_val;
 	} else {
 		for(int i =0 ; i < str2->length; i++) {
