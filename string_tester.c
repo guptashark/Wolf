@@ -1,7 +1,6 @@
 #include <stdio.h>
 #include <assert.h>
 
-
 #include "string.h"
 
 // TODO make it so that the header file is in a subdirectory, so that we don't have naming conflicts. 
