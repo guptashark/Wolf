@@ -30,9 +30,16 @@ int main(void) {
 		list_push_front(lst, str_array[i]);
 	}
 
+	list_pretty_print(lst);
 	char *herb = NULL;
 	list_access(lst, 3, &herb);
 	print_str(herb);
+	printf("\n");
+	herb = NULL;
+	list_pop_front(lst, &herb);
+	print_str(herb);
+	printf("\n");
+	list_pretty_print(lst);
 
 	return 0;
 }

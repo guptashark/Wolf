@@ -29,7 +29,6 @@ list_node_init(
 	return 0;
 }
 
-
 struct list {
 	int length;
 	struct list_node *front;
@@ -82,6 +81,22 @@ int list_push_front(struct list *lst, void *item) {
 	lst->length++;
 	return 0;
 }
+
+int list_pop_front(struct list *lst, void **item_ptr) {
+	if(NULL == lst) return 1;
+	if(NULL == item_ptr) return 2;
+	if(NULL != *item_ptr) return 3;
+	if(0 == lst->length) return 4;
+
+	struct list_node *to_pop = lst->front;
+	*item_ptr = to_pop->item;
+	lst->front = to_pop->next;
+	to_pop->next = NULL;
+	custom_free(to_pop);
+	lst->length--;
+	return 0;
+}
+	
 
 int list_push_back(struct list *lst, void *item) {
 	if(NULL == lst) return 1;
