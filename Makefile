@@ -4,7 +4,7 @@ CFLAGS = /Wall /WX /wd4710
 SRC = main.c bstree.c
 
 all: 
-	$(CC) $(CFLAGS) $(SRC)
+	$(CC) $(CFLAGS) main.c
 
 list_tester:
 	$(CC) $(CFLAGS) list_tester.c list.c custom_mem.c
@@ -17,3 +17,5 @@ bstree_tester:
 string_tester:
 	$(CC) $(CFLAGS) string_tester.c string.c custom_mem.c
 	string_tester.exe
+
+

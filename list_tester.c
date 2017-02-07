@@ -1,6 +1,7 @@
 #include <stdio.h>
 
 #include "list.h"
+#include "string.h"
 
 int print_str(void *s) {
 	char *str = (char *)s;
@@ -40,6 +41,8 @@ int main(void) {
 	print_str(herb);
 	printf("\n");
 	list_pretty_print(lst);
+
+	
 
 	return 0;
 }
