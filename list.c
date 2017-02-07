@@ -102,6 +102,29 @@ int list_push_back(struct list *lst, void *item) {
 	return 0;
 }
 
+int list_length(struct list *lst, int *len_ptr) {
+	if(NULL == lst) return 1;
+	if(NULL == len_ptr) return 2;
+	*len_ptr = lst->length;
+	return 0;
+}
+
+int list_access(struct list *lst, int index, void **item_ptr) {
+	if(NULL == lst) return 1;
+	if(index < 0) return 2;
+	if(index >= lst->length) return 3;
+	if(NULL == item_ptr) return 4;
+	if(NULL != *item_ptr) return 5;
+
+	struct list_node *current = lst->front;
+	for(int i = 0; i < index; i++) {
+		current = current->next;
+	}
+
+	*item_ptr = current->item;
+	return 0;
+}
+
 int list_pretty_print(struct list *lst) {
 	if(NULL == lst) return 1;
 	if(NULL == lst->item_print) return 2;

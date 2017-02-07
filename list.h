@@ -13,5 +13,9 @@ int list_push_front(struct list *lst, void *item);
 
 int list_push_back(struct list *lst, void *item);
 
+int list_length(struct list *lst, int *len_ptr);
+
+int list_access(struct list *lst, int index, void **item_ptr);
+
 int list_pretty_print(struct list *lst);
 

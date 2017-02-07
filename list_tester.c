@@ -30,6 +30,10 @@ int main(void) {
 		list_push_front(lst, str_array[i]);
 	}
 
+	char *herb = NULL;
+	list_access(lst, 3, &herb);
+	print_str(herb);
+
 	return 0;
 }
 
