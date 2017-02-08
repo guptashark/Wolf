@@ -6,6 +6,10 @@ SRC = main.c bstree.c
 all: 
 	$(CC) $(CFLAGS) main.c
 
+dfa_tester:
+	$(CC) $(CFLAGS) dfa_tester.c dfa.c list.c bstree.c custom_mem.c string.c
+	dfa_tester.exe
+
 list_tester:
 	$(CC) $(CFLAGS) list_tester.c list.c custom_mem.c
 	list_tester.exe

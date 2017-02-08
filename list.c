@@ -34,13 +34,13 @@ struct list {
 	struct list_node *front;
 	struct list_node *back;
 
-	int (*item_cmp)(void *, void *);
+	int (*item_cmp)(void *, void *, int *);
 	int (*item_print)(void *);
 };
 
 int list_init(
 	struct list **lst_ptr, 
-	int (*item_cmp)(void *, void *),
+	int (*item_cmp)(void *, void *, int *),
 	int (*item_print)(void *))
 {
 	if(NULL == lst_ptr) return 1;
@@ -123,6 +123,31 @@ int list_length(struct list *lst, int *len_ptr) {
 	*len_ptr = lst->length;
 	return 0;
 }
+
+int list_contains(struct list *lst, void *item, bool *result) {
+	if(NULL == lst) return 1;
+	if(NULL == item) return 2;
+	if(NULL == result) return 3;
+
+	if(lst->length == 0) {
+		*result = false;
+		return 0;
+	}
+
+	struct list_node *current = lst->front;
+	int cmp_ret = 0;
+	while(current != NULL) {
+		lst->item_cmp(item, current->item, &cmp_ret);
+		if(0 == cmp_ret) {
+			*result = true;
+			return 0;
+		}
+	}
+
+	*result = false;
+	return 0;
+}
+
 
 int list_access(struct list *lst, int index, void **item_ptr) {
 	if(NULL == lst) return 1;

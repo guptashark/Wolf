@@ -1,3 +1,4 @@
+#include <stdbool.h>
 
 struct list;
 
@@ -6,7 +7,7 @@ struct list;
  */
 int list_init(
 	struct list **lst_ptr, 
-	int (*item_cmp)(void *, void *), 
+	int (*item_cmp)(void *, void *, int *), 
 	int (*item_print)(void *));
 
 int list_push_front(struct list *lst, void *item);
@@ -16,6 +17,8 @@ int list_pop_front(struct list *lst, void **item_ptr);
 int list_push_back(struct list *lst, void *item);
 
 int list_length(struct list *lst, int *len_ptr);
+
+int list_contains(struct list *lst, void *item, bool *result);
 
 int list_access(struct list *lst, int index, void **item_ptr);
 

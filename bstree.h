@@ -5,7 +5,7 @@ struct bstree;
 
 int bstree_init(
 		struct bstree **bst_ptr,
-	       	int (*key_cmp)(void *, void *),
+	       	int (*key_cmp)(void *, void *, int *),
 		int (*key_printer)(void *),
 		int (*val_printer)(void *));
 

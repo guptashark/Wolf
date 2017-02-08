@@ -47,7 +47,7 @@ bst_node_init(
 
 struct bstree {
 	struct bst_node *root;
-	int (*key_cmp)(void *, void *);
+	int (*key_cmp)(void *, void *, int *);
 	int (*key_printer)(void *);
 	int (*val_printer)(void *);
 };
@@ -55,7 +55,7 @@ struct bstree {
 int 
 bstree_init(
 	struct bstree **bst_ptr, 
-	int (*key_cmp)(void *, void *),
+	int (*key_cmp)(void *, void *, int *),
 	int (*key_printer)(void *),
 	int (*val_printer)(void *))
 {
@@ -132,7 +132,7 @@ bstree_internal_lookup(
 	int cmp_result = 0;
 	struct bst_node *current = bst->root;
 
-	cmp_result = bst->key_cmp(key, previous->key);
+	bst->key_cmp(key, previous->key, &cmp_result);
 
 	if(cmp_result == 0) {
 		*ptr_bst_node = previous;
@@ -147,7 +147,7 @@ bstree_internal_lookup(
 
 	while(current != NULL) {
 		cmp_result = 0;
-		cmp_result = bst->key_cmp(key, current->key);
+		bst->key_cmp(key, current->key, &cmp_result);
 
 		if(cmp_result == 0) {
 			*ptr_bst_node = current;
