@@ -1,10 +1,12 @@
 #include <stdlib.h>
+#include <stdbool.h>
 #include <stdio.h>
 
 #include "list.h"
 #include "bstree.h"
 #include "string.h"
 #include "custom_mem.h"
+#include "charmap.h"
 
 /* 
  * every character, move a state. 
@@ -13,17 +15,14 @@
  * 	keys are strings, values are pointers to other states. 
  * 	the dfa keeps track of the current state. 
  *
- * Build the dfa. 	
+ * Build the dfa automatically
  * 	A process best left for some other time. 
  */
 
 struct dfa_state {
 	struct string *state_name;	
+	struct charmap *transitions;
 
-	/* keys type: (struct string *)
-	 * vals type: (struct dfa_state *) 
-	 */
-	struct bstree *transitions;
 };
 
 /* TODO 
@@ -54,9 +53,37 @@ dfa_state_init(
 	}
 
 	ret->state_name = state_name;
+
+	struct charmap *cm = NULL;
+	int err = charmap_init(&cm, NULL);
+	if(err) {
+		printf("issue in dfa_state_init\n");
+		return 5;
+	}
+
+	ret->transitions = cm;
+
 	*dfa_state_ptr = ret;
 	return 0;
+}
 
+static 
+int
+dfa_state_step(struct dfa_state *ds, char c, struct dfa_state **next_ptr) {
+	if(NULL == ds) return 1;
+	if(NULL == next_ptr) return 2;
+	if(NULL != *next_ptr) return 3;
+
+	struct dfa_state *next = NULL;
+	int err = 0;
+	err = charmap_lookup(ds->transitions, c, &next);
+	if(err) {
+		printf("Fatal error in dfa_state_step.\n");
+		return 4;
+	}
+
+	*next_ptr = next;
+	return 0;
 }
 
 
@@ -217,10 +244,46 @@ int dfa_add_transition(
 	char *to_state,
 	char *symbols)
 {
-	(void)automata;
-	(void)from_state;
-	(void)to_state;
-	(void)symbols;
+	if(NULL == automata) return 1;
+	if(NULL == from_state) return 2;
+	if(NULL == to_state) return 3;
+	if(NULL == symbols) return 4;
+
+	struct dfa_state *from_ptr = NULL;
+	struct dfa_state *to_ptr = NULL;
+
+	int err = 0;
+
+	struct string *from_str = NULL;
+	struct string *to_str = NULL;
+
+	string_init(&from_str, from_state);
+	string_init(&to_str, to_state);
+
+	err = bstree_lookup(automata->state_map, from_str, &from_ptr);
+	if(err) {
+		printf("Fatal error in dfa_add transition.\n");
+		return 5;
+	}
+
+	err = bstree_lookup(automata->state_map, to_str, &to_ptr);
+	if(err) {
+		printf("Fatal error code 6 in dfa_add_transition.\n");
+		return 6;
+	}
+
+	if(to_ptr == NULL) {
+		printf("didn't find ");
+		string_pretty_print(to_str);
+		printf(" in the bstree\n");
+	}
+	
+	err = charmap_c_str_insert(from_ptr->transitions, symbols, to_ptr); 
+	if(err) {
+		printf("Fatal error code 7 in dfa_add_transition.\n");
+		printf("err is; %d\n", err);
+		return 7;
+	}
 
 	return 0;
 }
@@ -228,6 +291,40 @@ int dfa_add_transition(
 /* need to add more here... 
  * TODO
  */
+int dfa_compute(struct dfa *automaton, char *input, bool *accept_ptr) {
+
+	struct dfa_state *current = automaton->start_state;
+
+	struct dfa_state *next = NULL;
+	for(int i =0; input[i] != '\0'; i++) {
+		//string_pretty_print(current->state_name);
+		//printf(": with symbol %c\n: ", input[i]);
+		///charmap_pretty_print(current->transitions);
+		dfa_state_step(current, input[i], &next);
+		if(NULL == next) {
+			*accept_ptr = false;
+			return 0;
+
+		}
+		current = next;
+		next = NULL;
+	}
+
+	//string_pretty_print(current->state_name);
+	//printf(" is the ending state.\n");
+	bool is_final = false;
+	list_contains(automaton->final_states, current, &is_final);
+
+	if(is_final) {
+		*accept_ptr = true;
+	} else {
+		*accept_ptr = false;
+	}
+
+	return 0;
+}
+
+
 int dfa_pretty_print(struct dfa *automaton) {
 	if(NULL == automaton) return 1;
 

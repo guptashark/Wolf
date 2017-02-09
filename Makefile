@@ -7,7 +7,7 @@ all:
 	$(CC) $(CFLAGS) main.c
 
 dfa_tester:
-	$(CC) $(CFLAGS) dfa_tester.c dfa.c list.c bstree.c custom_mem.c string.c
+	$(CC) $(CFLAGS) dfa_tester.c dfa.c list.c bstree.c custom_mem.c string.c charmap.c
 	dfa_tester.exe
 
 list_tester:

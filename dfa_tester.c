@@ -1,3 +1,4 @@
+#include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -20,30 +21,54 @@ int main(void) {
 
 	/* states to add in. */
 	char state_names[16][16] = {
-		"alpha",
-		"beta",
-		"gamma", 
-		"epsilon",
-		"phi",
-		"chi",
-		"sigma"
+		"A",
+		"B",
+		"C",
+		"D",
+		"E",
+		"F"
 	};
 
 
-	for(int i = 0; i < 7; i++) {
+	for(int i = 0; i < 6; i++) {
 		err = dfa_add_state(d1, state_names[i]);
 		if(err) {
-			printf("in loop: %d\n", i);
 			broken(err);
 			return 0;
 		}
 	}
 
-	dfa_set_start(d1, "phi");
-	dfa_set_final(d1, "sigma");
-	dfa_set_final(d1, "beta");
+	dfa_set_start(d1, "A");
+	dfa_set_final(d1, "E");
 
-	dfa_pretty_print(d1);
+
+	int err2 = 0;
+	err2 = dfa_add_transition(d1, "A", "B", "b");
+	if(err2) {
+		printf("%d is err in add transition\n", err2);
+	}
+	dfa_add_transition(d1, "B", "C", "c");
+	dfa_add_transition(d1, "C", "D", "d");
+	dfa_add_transition(d1, "D", "E", "e");
+
+	char inputs[10][10] = {
+		"bcde",
+		"bcdf",
+		"bdg",
+	};
+
+	bool result = false;
+
+
+	for(int i =0 ; i < 3; i++) {
+		dfa_compute(d1, inputs[i], &result);
+		if(result) {
+			printf("Accepted\n");
+		} else {
+			printf("Rejected\n");
+		}
+	}
+
 
 	printf("dfa_tester done testing.\n");
 	return 0;

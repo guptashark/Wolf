@@ -71,6 +71,14 @@ int string_has_char(struct string *str, char c, bool *result) {
 	return 0;
 }
 
+int string_length(struct string *str, int *len_ptr) {
+	if(NULL == str) return 1;
+	if(NULL == len_ptr) return 2;
+
+	*len_ptr = str->length;
+	return 0;
+}
+
 int string_concatenate(struct string *str1, struct string *str2) {
 	
 	if(NULL == str1) return 1;
@@ -143,6 +151,18 @@ int string_compare(struct string *str1, struct string *str2, int *result) {
 
 	return 0;
 }	
+
+int
+string_char_at(struct string *str, int index, char *ch_ptr) {
+	if(NULL == str) return 1;
+	if(index < 0) return 2;
+	if(index >= str->length) return 3;
+	if(NULL == ch_ptr) return 4;
+
+	*ch_ptr = str->vals[index];
+	return 0;
+}
+
 
 int
 string_pretty_print(struct string *str) {

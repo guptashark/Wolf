@@ -132,7 +132,10 @@ bstree_internal_lookup(
 	int cmp_result = 0;
 	struct bst_node *current = bst->root;
 
-	bst->key_cmp(key, previous->key, &cmp_result);
+	err = bst->key_cmp(key, previous->key, &cmp_result);
+	if(err) {
+		printf("err in bil, %d\n", err);
+	}
 
 	if(cmp_result == 0) {
 		*ptr_bst_node = previous;
@@ -217,7 +220,12 @@ int bstree_lookup(
 	if(*val_ptr != NULL) return 4;
 
 	struct bst_node *node = NULL;
-	bstree_internal_lookup(bst, key, &node, false);
+	int err = bstree_internal_lookup(bst, key, &node, false);
+
+	if(err) {
+		printf("err in lookup: %d\n", err);
+	}
+			
 
 	if (node != NULL) *val_ptr = node->val;
 	return 0;

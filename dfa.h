@@ -1,3 +1,4 @@
+#include <stdbool.h>
 /*
 struct dfa;
 
@@ -39,5 +40,13 @@ int dfa_add_state(struct dfa *automata, char *state_name);
 int dfa_set_start(struct dfa *automata, char *state_name);
 
 int dfa_set_final(struct dfa *automata, char *state_name);
+
+int dfa_add_transition(
+	struct dfa *automata, 
+	char *from_state, 
+	char *to_state, 
+	char *symbols);
+
+int dfa_compute(struct dfa *automata, char *input, bool *accept_ptr);
 
 int dfa_pretty_print(struct dfa *automaton);
