@@ -1,3 +1,4 @@
+#include "string.h"
 #include <stdbool.h>
 /*
 struct dfa;
@@ -32,6 +33,8 @@ run_through
  */
 
 struct dfa;
+
+int dfa_build_from_file(struct dfa **dfa_ptr, FILE *f, struct string *file_type);
 
 int dfa_init(struct dfa **dfa_ptr);
 

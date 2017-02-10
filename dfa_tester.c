@@ -70,6 +70,15 @@ int main(void) {
 	}
 
 
+
+	struct dfa *dfa_f = NULL;
+	dfa_build_from_file(&dfa_f, stdin, NULL);
+
+	bool accept = false;
+
+	dfa_compute(dfa_f, "hi", &accept);
+	if(accept) printf("Yayy!\n");
+
 	printf("dfa_tester done testing.\n");
 	return 0;
 }

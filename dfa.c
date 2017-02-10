@@ -2,6 +2,7 @@
 #include <stdbool.h>
 #include <stdio.h>
 
+#include "dfa.h"
 #include "list.h"
 #include "bstree.h"
 #include "string.h"
@@ -104,6 +105,54 @@ static int ptr_cmp(void *a, void *b, int *res) {
 	}
 
 	return 0;
+}
+
+/* TODO
+ * all the error checking. 
+ */
+int dfa_build_from_file(struct dfa **dfa_ptr, FILE *f, struct string *file_type) {
+
+	(void)file_type;
+	if(NULL == dfa_ptr) return 1;
+	if(NULL != *dfa_ptr) return 2;
+	if(NULL == f) return 3;
+
+	struct dfa *ret = NULL;
+	dfa_init(&ret);
+
+	/* add the start state. */
+	char buff[32];
+	int num_states = 0;
+	scanf("%d", &num_states);
+	scanf("%s", buff);
+	dfa_add_state(ret, buff);
+	dfa_set_start(ret, buff);
+
+	for(int i = 0; i < num_states - 1; i++) {
+		scanf("%s", buff);
+		dfa_add_state(ret, buff);
+	}
+
+	int num_final_states = 0;
+	scanf("%d", &num_final_states);
+	for(int i =0; i < num_final_states; i++) {
+		scanf("%s", buff);
+		dfa_set_final(ret, buff);
+	}
+
+	int num_transitions = 0;
+	scanf("%d", &num_transitions);
+	char from_state[32];
+	char to_state[32];
+	char symbols[32];
+	for(int i = 0; i < num_transitions; i++) {
+		scanf("%s", from_state);
+		scanf("%s", symbols);
+		scanf("%s", to_state);
+		dfa_add_transition(ret, from_state, to_state, symbols);
+	}
+	
+	*dfa_ptr = ret;
 }
 
 

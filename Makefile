@@ -1,13 +1,14 @@
 
 CC = cl
-CFLAGS = /Wall /WX /wd4710
+CFLAGS = Wall /WX /wd4710
+CFLAGS = 
 SRC = main.c bstree.c
 
 all: 
 	$(CC) $(CFLAGS) main.c
 
 dfa_tester:
-	$(CC) $(CFLAGS) dfa_tester.c dfa.c list.c bstree.c custom_mem.c string.c charmap.c
+	$(CC) dfa_tester.c dfa.c list.c bstree.c custom_mem.c string.c charmap.c
 	dfa_tester.exe
 
 list_tester:
